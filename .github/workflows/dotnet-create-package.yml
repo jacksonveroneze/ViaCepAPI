@@ -2,6 +2,8 @@ name: Create Package
 
 on: 
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -17,10 +19,13 @@ jobs:
         dotnet-version: 5.0.101
     
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./src/JacksonVeroneze.ViaCepApi.Client/
     
     - name: Build
-      run: dotnet pack --configuration Release ./src/JacksonVeroneze.ViaCepApi.Client/JacksonVeroneze.ViaCepApi.Client.csproj
+      run: dotnet build --configuration Release ./src/JacksonVeroneze.ViaCepApi.Client/
+    
+    - name: Pack
+      run: dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} ./src/JacksonVeroneze.ViaCepApi.Client/
 
-    - name: Publish
-      run: dotnet nuget push ./src/JacksonVeroneze.ViaCepApi.Client/bin/Release/*.nupkg --api-key ${{ secrets.GH_TOKEN }} --source "https://nuget.pkg.github.com/OWNER/index.json"
+    - name: Publish Package
+      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GH_TOKEN }} --source "https://nuget.pkg.github.com/OWNER/index.json" -no-symbols true
