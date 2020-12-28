@@ -1,31 +1,30 @@
 name: Create Package
 
-on: 
+on:
   workflow_dispatch:
   release:
     types: [published]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.101
-    
+
     - name: Restore dependencies
       run: dotnet restore ./src/JacksonVeroneze.ViaCepApi.Client/
-    
+
     - name: Build
       run: dotnet build --configuration Release ./src/JacksonVeroneze.ViaCepApi.Client/
-    
+
     - name: Pack
       run: dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} ./src/JacksonVeroneze.ViaCepApi.Client/
 
     - name: Publish Package
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GH_TOKEN }} --source "https://nuget.pkg.github.com/OWNER/index.json" -no-symbols true
+      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GH_TOKEN }} --source "https://nuget.pkg.github.com/jacksonveroneze/index.json" -no-symbols true
