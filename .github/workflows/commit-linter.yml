@@ -1,7 +1,8 @@
 name: Analize Commit
 
 on:
-  push:
+  #push:
+  pull_request:
     
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
