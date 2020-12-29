@@ -1,4 +1,4 @@
-name: Build
+name: Run Sonar
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Run Sonar
     runs-on: ubuntu-latest
     
     steps:
@@ -27,15 +27,21 @@ jobs:
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
-          path: ~\sonar\cache
+          path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
            
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar.scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          dotnet tool update dotnet-sonarscanner
+        run: dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
       
       - name: Install project dependencies
         run: dotnet restore
