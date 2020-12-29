@@ -35,7 +35,7 @@ jobs:
         id: cache-sonar-scanner
         uses: actions/cache@v1
         with:
-          path: ~/.sonar.scanner
+          path: ~/.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
@@ -54,6 +54,6 @@ jobs:
         run: |
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"jacksonveroneze_ViaCepAPI" /o:"jacksonveroneze" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          ~/.sonar/scanner/dotnet-sonarscanner begin /k:"jacksonveroneze_ViaCepAPI" /o:"jacksonveroneze" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build --configuration Release --no-restore
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
