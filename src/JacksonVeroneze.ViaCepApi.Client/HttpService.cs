@@ -11,5 +11,11 @@ namespace JacksonVeroneze.ViaCepApi.Client
 
             return gitHubApi.FindAsync(value);
         }
+		
+		public Task<SearchDataResult> Find1Async(string value){
+            IHttpService gitHubApi = RestService.For<IHttpService>("https://viacep.com.br/");
+
+            return gitHubApi.FindAsync(value);
+        }
     }
 }
