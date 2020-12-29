@@ -54,6 +54,17 @@ jobs:
         shell: pwsh
         run: |
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-          ~/.sonar/scanner/dotnet-sonarscanner begin /k:"jacksonveroneze_ViaCepAPI" /o:"jacksonveroneze" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=./src/JacksonVeroneze.ViaCepApi.Tests/coverage.opencover.xml
+          
+          ~/.sonar/scanner/dotnet-sonarscanner begin \
+          /k:"jacksonveroneze_ViaCepAPI" \
+          /o:"jacksonveroneze" \
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.cs.opencover.reportsPaths=./src/JacksonVeroneze.ViaCepApi.Tests/coverage.opencover.xml \
+          /d:sonar.exclusions="./src/JacksonVeroneze.ViaCepApi.Tests/**" \
+          /d:sonar.coverage.exclusions="./src/JacksonVeroneze.ViaCepApi.Tests/**" \
+          /v:${{ github.run_id }}
+          
           dotnet build --configuration Release --no-restore
+          
           ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
