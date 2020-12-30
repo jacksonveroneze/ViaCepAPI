@@ -14,7 +14,7 @@ namespace JacksonVeroneze.ViaCepApi.Tests
             IHttpService service = new HttpService();
 
             // Act
-            SearchDataResult result = await service.FindAsync("89665000");
+            var result = await service.FindAsync("89665000");
 
             // Assert
             result.Should().NotBeNull();
