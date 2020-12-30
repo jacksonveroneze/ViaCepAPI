@@ -1,7 +1,6 @@
 name: Analize Commit
 
 on:
-  #push:
   pull_request:
     
 env:
