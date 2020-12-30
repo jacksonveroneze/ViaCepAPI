@@ -19,5 +19,12 @@ namespace JacksonVeroneze.ViaCepApi.Client
 
 	        return gitHubApi.FindCepsAsync(state, city, street);
         }
+		
+		public Task<IList<SearchDataResult>> FindCeps2Async(string state, string city, string street)
+        {
+	        var gitHubApi = RestService.For<IHttpService>("https://viacep.com.br/");
+
+	        return gitHubApi.FindCepsAsync(state, city, street);
+        }
     }
 }
