@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
+          fetch-depth: ''
       - run: git fetch --prune --unshallow
       
       - name: Cache SonarCloud packages
